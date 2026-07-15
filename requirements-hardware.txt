@@ -1,0 +1,4 @@
+# Install only when running on an actual Raspberry Pi with sensors wired up.
+RPi.GPIO>=0.7.1
+adafruit-circuitpython-dht>=3.7.8
+adafruit-blinka>=8.20.1

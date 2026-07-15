@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IOT-CTRL // Monitoring &amp; Control</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="scanlines"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">&#9679;</span>
+    <span class="brand-text">IOT&#8209;CTRL</span>
+    <span class="brand-sub">Smart Monitoring &amp; Control Console</span>
+  </div>
+  <div class="mode-pills">
+    <span class="pill" id="pill-gpio">GPIO: --</span>
+    <span class="pill" id="pill-sensor">SENSORS: --</span>
+    <span class="pill pill-live"><span class="dot"></span>LIVE</span>
+  </div>
+</header>
+
+<main class="grid">
+
+  <!-- Sensor readouts -->
+  <section class="panel readouts">
+    <h2 class="panel-title"><span class="idx">01</span> Sensor Telemetry</h2>
+    <div class="readout-row">
+      <div class="readout">
+        <span class="readout-label">Temperature</span>
+        <span class="readout-value"><span id="val-temp">--</span><span class="unit">&deg;C</span></span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Humidity</span>
+        <span class="readout-value"><span id="val-humidity">--</span><span class="unit">%RH</span></span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Light Level</span>
+        <span class="readout-value"><span id="val-light">--</span><span class="unit">lux</span></span>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart" height="220"></canvas>
+    </div>
+    <div class="readout-footer">Last sample: <span id="last-sample">--</span></div>
+  </section>
+
+  <!-- LED / actuator control -->
+  <section class="panel controls">
+    <h2 class="panel-title"><span class="idx">02</span> Output Control</h2>
+    <div id="led-list" class="led-list">
+      <!-- populated by JS -->
+    </div>
+    <div class="control-footer">Toggling here sends an HTTP POST to <code>/api/leds/&lt;pin&gt;/toggle</code></div>
+  </section>
+
+  <!-- Network / system status -->
+  <section class="panel status">
+    <h2 class="panel-title"><span class="idx">03</span> System &amp; Network</h2>
+    <dl class="status-list">
+      <div class="status-row"><dt>Server uptime</dt><dd id="stat-uptime">--</dd></div>
+      <div class="status-row"><dt>Requests served</dt><dd id="stat-requests">--</dd></div>
+      <div class="status-row"><dt>Your client IP</dt><dd id="stat-ip">--</dd></div>
+      <div class="status-row"><dt>Server time</dt><dd id="stat-time">--</dd></div>
+      <div class="status-row"><dt>GPIO mode</dt><dd id="stat-gpio-mode">--</dd></div>
+      <div class="status-row"><dt>Sensor mode</dt><dd id="stat-sensor-mode">--</dd></div>
+    </dl>
+    <div class="control-footer">Every widget on this page is a client of the same Flask REST API &mdash; open this URL from another device on your LAN to see it update in sync.</div>
+  </section>
+
+  <!-- Event log -->
+  <section class="panel log">
+    <h2 class="panel-title"><span class="idx">04</span> Event Log</h2>
+    <div id="event-log" class="event-log"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Python &middot; Flask &middot; GPIO &middot; REST &mdash; polling interval 2.0s
+</footer>
+
+<script>
+  window.__LED_PINS__ = {{ led_pins | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

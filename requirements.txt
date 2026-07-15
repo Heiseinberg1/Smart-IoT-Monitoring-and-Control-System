@@ -1,0 +1,6 @@
+Flask>=3.0,<4.0
+
+# Optional - only needed for REAL Raspberry Pi hardware.
+# On a Pi:  pip install -r requirements-hardware.txt
+# On a laptop/dev machine these are not required; the app auto-falls-back
+# to simulated GPIO/sensor data if they are missing.
